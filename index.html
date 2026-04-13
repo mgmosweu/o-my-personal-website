@@ -1,37 +1,600 @@
 <!DOCTYPE html>
-<html lang="en" style="color:black;">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Myself</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miguel Mosweu</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cream: #f5f0e8;
+      --dark: #1a1a2e;
+      --red: #e63946;
+      --gold: #f4a522;
+      --mid: #2d2d4e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      background: var(--dark) !important;
+      border-bottom: 3px solid var(--gold);
+    }
+    .navbar-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--gold) !important;
+      letter-spacing: 1px;
+    }
+    .nav-link {
+      color: #ccc !important;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+    .nav-link:hover { color: var(--gold) !important; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--dark);
+      color: white;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '♟';
+      position: absolute;
+      right: -40px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 40vw;
+      opacity: 0.04;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--dark);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      padding: 4px 14px;
+      margin-bottom: 1.5rem;
+      border-radius: 2px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero p.lead {
+      font-size: 1.2rem;
+      color: #aaa;
+      max-width: 500px;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+    .btn-hero {
+      background: var(--red);
+      color: white;
+      border: none;
+      padding: 14px 36px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.85rem;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.25s, transform 0.2s;
+      display: inline-block;
+    }
+    .btn-hero:hover { background: #c1121f; transform: translateY(-2px); color: white; }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      background: var(--gold);
+      padding: 28px 0;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--dark);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #5a3e00;
+      margin-top: 4px;
+    }
+
+    /* ── SECTION LABELS ── */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--red);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--dark);
+    }
+
+    /* ── ABOUT SECTION ── */
+    .about-section {
+      padding: 100px 0;
+    }
+    .about-text {
+      font-size: 1.05rem;
+      line-height: 1.95;
+      color: #444;
+      font-weight: 300;
+    }
+    .about-text .highlight {
+      color: var(--red);
+      font-weight: 600;
+    }
+    .quote-block {
+      border-left: 5px solid var(--gold);
+      padding: 20px 24px;
+      background: white;
+      margin: 2rem 0;
+      box-shadow: 4px 4px 0 var(--gold);
+    }
+    .quote-block p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--dark);
+      margin: 0;
+    }
+
+    /* ── JOURNEY TABLE ── */
+    .journey-section {
+      background: var(--dark);
+      padding: 100px 0;
+      color: white;
+    }
+    .journey-section .section-title { color: white; }
+    .journey-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2.5rem;
+    }
+    .journey-table thead th {
+      background: var(--gold);
+      color: var(--dark);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.8rem;
+      padding: 16px 20px;
+      border: none;
+    }
+    .journey-table tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      transition: background 0.2s;
+    }
+    .journey-table tbody tr:hover {
+      background: rgba(244, 165, 34, 0.08);
+    }
+    .journey-table td {
+      padding: 18px 20px;
+      color: #ccc;
+      font-size: 0.95rem;
+    }
+    .journey-table td:first-child {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--gold);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .badge-red {
+      background: var(--red);
+      color: white;
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 2px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .badge-gold {
+      background: var(--gold);
+      color: var(--dark);
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 2px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ── HOBBIES ── */
+    .hobbies-section { padding: 100px 0; }
+    .hobby-card {
+      background: white;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+      height: 100%;
+    }
+    .hobby-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 50px rgba(0,0,0,0.14);
+    }
+    .hobby-card-top {
+      height: 8px;
+    }
+    .hobby-card-top.football { background: var(--red); }
+    .hobby-card-top.chess { background: var(--gold); }
+    .hobby-card-body { padding: 32px; }
+    .hobby-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      display: block;
+      line-height: 1;
+    }
+    .hobby-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+    .hobby-card p {
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+    .hobby-goal {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 6px 16px;
+      border-radius: 2px;
+    }
+    .hobby-goal.red { background: #fff0f1; color: var(--red); border: 1px solid var(--red); }
+    .hobby-goal.gold { background: #fffbf0; color: #a07000; border: 1px solid var(--gold); }
+
+    /* ── SKILLS TABLE ── */
+    .skills-section {
+      background: #f0ebe0;
+      padding: 100px 0;
+    }
+    .skills-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2.5rem;
+      background: white;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.07);
+    }
+    .skills-table th {
+      background: var(--mid);
+      color: white;
+      padding: 16px 24px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .skills-table td {
+      padding: 16px 24px;
+      border-bottom: 1px solid #eee;
+      font-size: 0.95rem;
+      color: #444;
+    }
+    .skills-table tr:last-child td { border-bottom: none; }
+    .skills-table tr:hover td { background: #faf7f0; }
+    .skills-table td:first-child {
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .progress-bar-custom {
+      height: 8px;
+      background: #eee;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--red));
+      border-radius: 4px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: #888;
+      text-align: center;
+      padding: 40px 0;
+      border-top: 3px solid var(--gold);
+    }
+    footer span { color: var(--gold); font-weight: 700; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero > .container { animation: fadeUp 0.9s ease both; }
+    .stats-strip .stat-item { animation: fadeUp 0.7s ease both; }
+    .stats-strip .stat-item:nth-child(2) { animation-delay: 0.1s; }
+    .stats-strip .stat-item:nth-child(3) { animation-delay: 0.2s; }
+    .stats-strip .stat-item:nth-child(4) { animation-delay: 0.3s; }
+
+    /* Divider */
+    .divider {
+      width: 60px; height: 4px;
+      background: var(--gold);
+      margin-top: 16px; margin-bottom: 32px;
+    }
+  </style>
 </head>
-    
 <body>
-    <h1 style="color:Tomato;">Miguel Mosweu</h1>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="projects.html">Projects</a>
-    <a href="gallery.html">Gallery</a>
-    <a href="blog.html">Blog</a>
-    <a href="contact.html">Contact</a>
-  </nav>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">♟ Miguel</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="project.html">Projects</a></li>
+        <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-9">
+        <div class="hero-tag">Enter my chess dimension</div>
+        <h1>Miguel<br><span>Mosweu.</span></h1>
+        <p class="lead">Student. Strategist. Future Grand Master.<br>Turning setbacks into stepping stones, one move at a time.</p>
+        <a href="project.html" class="btn-hero">View My Projects →</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-	<p>
-        I'm Miguel Mosweu, A young 18 year old who also like other students has had some difficults in life. And what drives me most is my sense of regret that I still carry with me for barely passing my JCE exams with a grade C+. This is hit a nerve in me to always work hard as I saw the dissappointing i brought to my mother. Moving from one place to another in my junior years really affetcted my mindest and the new sense of freedom i had there also led to my downfall. After seeing my JCE results, I worked hard in my Senior schools years and managed to get 45points in my BGCSE. This resulted in me being able to pursure one of the course I wanted to do which specializes in data management and IA, as the world ius rapidly increasing in the use of IA in this generation so i found that if I Sstudy in the IT department more job oppportunities may open up for me. 
-    </p>
-    
-    <h1 style="color:Tomato;">My hobbies</h1>
-    <p>
-        I have various hobbies like most people, but I especially enjoy playing football and chess. I spend a lot of my free time improving my skills in both. One thing i mostly like about chess is that improves my concentration and strategic thinking and yes it does stress a lot when you are losing but that's the thing about it. And chess is one my hobbies that i wanna try and make it internationa (to be a GM or IM). So that why every free time I get I use it to train.
-    </p>
-    
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="container">
+    <div class="row g-3 justify-content-center">
+      <div class="col-6 col-md-3 stat-item">
+        <div class="stat-number">45</div>
+        <div class="stat-label">BGCSE Points</div>
+      </div>
+      <div class="col-6 col-md-3 stat-item">
+        <div class="stat-number">18</div>
+        <div class="stat-label">Years Old</div>
+      </div>
+      <div class="col-6 col-md-3 stat-item">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">Chess Games</div>
+      </div>
+      <div class="col-6 col-md-3 stat-item">
+        <div class="stat-number">1</div>
+        <div class="stat-label">Goal: GM Title</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT SECTION -->
+<section class="about-section">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-5">
+        <div class="section-label">My Story</div>
+        <h2 class="section-title">From Struggle<br>to Strategy</h2>
+        <div class="divider"></div>
+
+        <div class="quote-block">
+          <p>"Every setback is just a move that sets up a comeback."</p>
+        </div>
+
+        <p class="about-text" style="margin-top:1rem;">
+          I'm Miguel — an <span class="highlight">18-year-old BIDA student</span> at Botswana Accountancy College, driven by purpose and fuelled by a past I refuse to repeat.
+        </p>
+      </div>
+
+      <div class="col-lg-7">
+        <p class="about-text">
+          Like many students, my path wasn't always straight. Moving from place to place during my junior years disrupted my mindset, and the freedom I found hit me at the wrong time — I barely passed my JCE with a <span class="highlight">C+</span>. That result haunts me to this day, and the disappointment I saw on my mother's face became the fire I carry everywhere.
+        </p>
+        <p class="about-text" style="margin-top:1.2rem;">
+          But I listened. I locked in. By the time Senior school was done, I had pulled off <span class="highlight">45 points in my BGCSE</span> — a score that opened the door to exactly what I wanted: a course specialising in data management and IT. With the world accelerating into an AI-driven era, I know that the IT department is where opportunities will explode. I'm positioning myself right in the middle of it.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY TABLE -->
+<section class="journey-section">
+  <div class="container">
+    <div class="section-label" style="color: var(--gold);">Academic Timeline</div>
+    <h2 class="section-title">My Journey,<br>By the Numbers</h2>
+
+    <table class="journey-table">
+      <thead>
+        <tr>
+          <th>Year / Stage</th>
+          <th>Milestone</th>
+          <th>Outcome</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Junior School</td>
+          <td>Frequent relocations disrupted study routine & focus</td>
+          <td>JCE — Grade C+</td>
+          <td><span class="badge-red">Setback</span></td>
+        </tr>
+        <tr>
+          <td>Senior School</td>
+          <td>Locked in; intense focus, disciplined work ethic</td>
+          <td>BGCSE — 45 Points</td>
+          <td><span class="badge-gold">Comeback</span></td>
+        </tr>
+        <tr>
+          <td>2025–Present</td>
+          <td>Enrolled in BIDA at Botswana Accountancy College</td>
+          <td>Data Management & IT</td>
+          <td><span class="badge-gold">In Progress</span></td>
+        </tr>
+        <tr>
+          <td>Future</td>
+          <td>Chess: target International Master / Grand Master title</td>
+          <td>Global recognition</td>
+          <td><span class="badge-red">In Pursuit</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- HOBBIES -->
+<section class="hobbies-section">
+  <div class="container">
+    <div class="section-label">What I Do For Fun</div>
+    <h2 class="section-title">My Hobbies</h2>
+    <div class="divider"></div>
+
+    <div class="row g-4 mt-1">
+      <div class="col-md-6">
+        <div class="hobby-card">
+          <div class="hobby-card-top football"></div>
+          <div class="hobby-card-body">
+            <span class="hobby-icon">⚽</span>
+            <h3>Football</h3>
+            <p>Football keeps me grounded and sharp — team discipline, reading the game, and staying physically fit all feed into how I approach life. There's something about the pitch that clears the mind like nothing else.</p>
+            <span class="hobby-goal red">Active Player</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="hobby-card">
+          <div class="hobby-card-top chess"></div>
+          <div class="hobby-card-body">
+            <span class="hobby-icon">♟</span>
+            <h3>Chess</h3>
+            <p>Chess isn't just a hobby — it's a calling. The concentration it demands, the strategic depth it rewards, and yes, the painful losses that teach the most valuable lessons. Every free moment I get, I'm training. My goal? To go international and earn the GM or IM title.</p>
+            <span class="hobby-goal gold">🎯 Goal: GM / IM Title</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS TABLE -->
+<section class="skills-section">
+  <div class="container">
+    <div class="section-label">What I'm Learning</div>
+    <h2 class="section-title">Current Skills</h2>
+    <div class="divider"></div>
+
+    <table class="skills-table">
+      <thead>
+        <tr>
+          <th>Skill / Subject</th>
+          <th>Course</th>
+          <th>Level</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>HTML & CSS</td>
+          <td>Web Design Principles</td>
+          <td>Intermediate</td>
+        </tr>
+        <tr>
+          <td>Python Programming</td>
+          <td>Intro to Programming</td>
+          <td>Beginner+</td>
+        </tr>
+        <tr>
+          <td>Data Warehousing</td>
+          <td>Business Intelligence 102</td>
+          <td>Intermediate</td>
+        </tr>
+        <tr>
+          <td>Systems Development</td>
+          <td>Computing & Info Systems</td>
+          <td>Beginner+</td>
+        </tr>
+        <tr>
+          <td>Strategic Thinking</td>
+          <td>Chess (Self-taught)</td>
+          <td>Advanced</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
-    <p style="color:Tomato;">>&copy; © 2026 Miguel Mosweu ♟️ All rights reserved.</p>
-  </footer>
-    
+  <p>&copy; 2026 <span>Miguel Mosweu</span> ♟</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

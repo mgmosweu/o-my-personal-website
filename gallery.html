@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — Miguel Mosweu</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cream: #f5f0e8;
+      --dark: #1a1a2e;
+      --red: #e63946;
+      --gold: #f4a522;
+      --mid: #2d2d4e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      background: var(--dark) !important;
+      border-bottom: 3px solid var(--gold);
+    }
+    .navbar-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--gold) !important;
+      letter-spacing: 1px;
+    }
+    .nav-link {
+      color: #ccc !important;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+    .nav-link:hover { color: var(--gold) !important; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      background: var(--dark);
+      padding: 90px 0 70px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '♝';
+      position: absolute;
+      right: -20px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 30vw;
+      opacity: 0.04;
+      pointer-events: none;
+      line-height: 1;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--dark);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      padding: 4px 14px;
+      margin-bottom: 1.2rem;
+      border-radius: 2px;
+    }
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 900;
+      color: white;
+      line-height: 1;
+    }
+    .page-hero h1 span { color: var(--gold); }
+    .page-hero p.lead {
+      color: #aaa;
+      font-size: 1.1rem;
+      font-weight: 300;
+      margin-top: 1.2rem;
+      max-width: 520px;
+    }
+
+    /* ── SHARED ── */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--red);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      color: var(--dark);
+    }
+    .divider {
+      width: 60px; height: 4px;
+      background: var(--gold);
+      margin-top: 14px; margin-bottom: 40px;
+    }
+
+    /* ── GALLERY SECTION ── */
+    .gallery-section { padding: 90px 0; }
+
+    .gallery-card {
+      background: white;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      transition: transform 0.35s, box-shadow 0.35s;
+      position: relative;
+    }
+    .gallery-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.16);
+    }
+    .gallery-card:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    /* Image wrapper keeps fixed aspect ratio */
+    .gallery-img-wrap {
+      width: 100%;
+      padding-bottom: 75%; /* 4:3 ratio */
+      position: relative;
+      background: #e8e2d6;
+      overflow: hidden;
+    }
+    .gallery-img-wrap img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s;
+    }
+    .gallery-card:hover .gallery-img-wrap img {
+      transform: scale(1.06);
+    }
+
+    /* Overlay on hover */
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26,26,46,0.88) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.35s;
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+    }
+    .gallery-overlay span {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+    }
+
+    /* Placeholder shown when image is missing */
+    .gallery-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a1a2e 0%, #2d2d4e 100%);
+      color: rgba(255,255,255,0.15);
+    }
+    .gallery-placeholder .piece-icon {
+      font-size: 4rem;
+      line-height: 1;
+      color: rgba(244,165,34,0.25);
+    }
+    .gallery-placeholder .ph-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: rgba(244,165,34,0.35);
+      margin-top: 10px;
+    }
+
+    .gallery-card-footer {
+      padding: 16px 20px;
+      border-top: 2px solid #f0ebe0;
+    }
+    .gallery-card-footer h5 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--dark);
+      margin: 0 0 4px;
+    }
+    .gallery-card-footer p {
+      font-size: 0.8rem;
+      color: #999;
+      font-weight: 400;
+      margin: 0;
+    }
+    .gallery-top {
+      height: 5px;
+    }
+    .gallery-top.red  { background: var(--red); }
+    .gallery-top.gold { background: var(--gold); }
+    .gallery-top.mid  { background: var(--mid); }
+
+    /* ── LEGENDS STRIP ── */
+    .legends-section {
+      background: var(--dark);
+      padding: 90px 0;
+    }
+    .legends-section .section-label { color: var(--gold); }
+    .legends-section .section-title { color: white; }
+    .legends-section .divider { background: var(--red); }
+
+    .legend-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .legend-row:last-child { border-bottom: none; }
+    .legend-piece {
+      font-size: 2.4rem;
+      line-height: 1;
+      min-width: 48px;
+      text-align: center;
+      color: var(--gold);
+    }
+    .gallery-card-footer h3.gallery-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--dark);
+      margin: 0 0 4px;
+    }
+    .legend-info h3.legend-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: white;
+      margin-bottom: 6px;
+    }
+    .legend-info p {
+      font-size: 0.88rem;
+      color: #aaa;
+      font-weight: 300;
+      line-height: 1.7;
+      margin: 0;
+    }
+    .legend-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 3px 10px;
+      border-radius: 2px;
+      margin-top: 8px;
+      display: inline-block;
+    }
+    .legend-badge.gm   { background: #fff0f1; color: var(--red); border: 1px solid var(--red); }
+    .legend-badge.im   { background: #fffbf0; color: #a07000; border: 1px solid var(--gold); }
+    .legend-badge.icon { background: #f0f0ff; color: var(--mid); border: 1px solid var(--mid); }
+
+    /* ── QUOTE ── */
+    .quote-section {
+      background: var(--gold);
+      padding: 70px 0;
+      text-align: center;
+    }
+    .quote-section blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+      font-weight: 700;
+      color: var(--dark);
+      max-width: 750px;
+      margin: 0 auto;
+      line-height: 1.3;
+    }
+    .quote-section cite {
+      display: block;
+      margin-top: 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #7a5500;
+      font-style: normal;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: #888;
+      text-align: center;
+      padding: 40px 0;
+      border-top: 3px solid var(--gold);
+    }
+    footer span { color: var(--gold); font-weight: 700; }
+
+    /* ── ANIMATION ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .page-hero .container { animation: fadeUp 0.9s ease both; }
+
+    /* ── CHESS BOARD DIVIDER ── */
+    .board-divider {
+      display: flex;
+      height: 12px;
+      overflow: hidden;
+    }
+    .board-divider span {
+      flex: 1;
+      height: 100%;
+    }
+    .board-divider span:nth-child(odd)  { background: var(--dark); }
+    .board-divider span:nth-child(even) { background: var(--gold); }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">♟ Miguel</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="project.html">Projects</a></li>
+        <li class="nav-item"><a class="nav-link active" href="gallery.html">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-tag">Chess & Inspiration</div>
+    <h1>The <span>Gallery.</span></h1>
+    <p class="lead">The players, the pieces, and the moments that fuel my obsession with the greatest game ever played.</p>
+  </div>
+</section>
+
+<!-- CHESS BOARD DIVIDER -->
+<div class="board-divider">
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+</div>
+
+<!-- GALLERY GRID -->
+<section class="gallery-section">
+  <div class="container">
+    <div class="section-label">My Chess World</div>
+    <h2 class="section-title">Faces & Moments on the Board</h2>
+    <div class="divider"></div>
+
+    <div class="row g-4">
+
+      <!-- Beth Harmon -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="gallery-card">
+          <div class="gallery-top red"></div>
+          <div class="gallery-img-wrap">
+            <img src="images/beth.jpg" alt="Beth Harmon"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="gallery-placeholder" style="display:none;">
+              <div class="piece-icon">♛</div>
+              <div class="ph-label">Beth Harmon</div>
+            </div>
+            <div class="gallery-overlay"><span>View →</span></div>
+          </div>
+          <div class="gallery-card-footer">
+            <h3 class="gallery-card-title">Beth Harmon</h3>
+            <p>The Queen's Gambit — fictional icon</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Levy Rozman -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="gallery-card">
+          <div class="gallery-top gold"></div>
+          <div class="gallery-img-wrap">
+            <img src="images/levy,jpg.jpg" alt="Levy Rozman – GothamChess"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="gallery-placeholder" style="display:none;">
+              <div class="piece-icon">♞</div>
+              <div class="ph-label">GothamChess</div>
+            </div>
+            <div class="gallery-overlay"><span>View →</span></div>
+          </div>
+          <div class="gallery-card-footer">
+            <h3 class="gallery-card-title">Levy Rozman</h3>
+            <p>GothamChess — IM &amp; content creator</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chess Pieces -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="gallery-card">
+          <div class="gallery-top mid"></div>
+          <div class="gallery-img-wrap">
+            <img src="images/chesspieces.jpg" alt="Chess pieces"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="gallery-placeholder" style="display:none;">
+              <div class="piece-icon">♜♝♞</div>
+              <div class="ph-label">The Pieces</div>
+            </div>
+            <div class="gallery-overlay"><span>View →</span></div>
+          </div>
+          <div class="gallery-card-footer">
+            <h3 class="gallery-card-title">The Pieces</h3>
+            <p>Every piece has a role — like a team</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- IM Badge -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="gallery-card">
+          <div class="gallery-top red"></div>
+          <div class="gallery-img-wrap">
+            <img src="images/IM.jpg" alt="International Master title"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="gallery-placeholder" style="display:none;">
+              <div class="piece-icon">🏅</div>
+              <div class="ph-label">IM Title</div>
+            </div>
+            <div class="gallery-overlay"><span>View →</span></div>
+          </div>
+          <div class="gallery-card-footer">
+            <h3 class="gallery-card-title">International Master</h3>
+            <p>One of my biggest goals in chess</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chess Magazine / Magnus -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="gallery-card">
+          <div class="gallery-top gold"></div>
+          <div class="gallery-img-wrap">
+            <img src="images/chessmagazine.jpg" alt="Magnus Carlsen"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="gallery-placeholder" style="display:none;">
+              <div class="piece-icon">♚</div>
+              <div class="ph-label">Magnus</div>
+            </div>
+            <div class="gallery-overlay"><span>View →</span></div>
+          </div>
+          <div class="gallery-card-footer">
+            <h3 class="gallery-card-title">Magnus Carlsen</h3>
+            <p>The greatest of this era — a blueprint</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bobby Fischer -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="gallery-card">
+          <div class="gallery-top mid"></div>
+          <div class="gallery-img-wrap">
+            <img src="images/BobbyFischer.jpg" alt="Bobby Fischer"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="gallery-placeholder" style="display:none;">
+              <div class="piece-icon">♔</div>
+              <div class="ph-label">Bobby Fischer</div>
+            </div>
+            <div class="gallery-overlay"><span>View →</span></div>
+          </div>
+          <div class="gallery-card-footer">
+            <h3 class="gallery-card-title">Bobby Fischer</h3>
+            <p>Pure genius — ruthless on the board</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fabiano Caruana -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="gallery-card">
+          <div class="gallery-top red"></div>
+          <div class="gallery-img-wrap">
+            <img src="images/fabiano.jpg" alt="Fabiano Caruana"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="gallery-placeholder" style="display:none;">
+              <div class="piece-icon">♗</div>
+              <div class="ph-label">Fabiano</div>
+            </div>
+            <div class="gallery-overlay"><span>View →</span></div>
+          </div>
+          <div class="gallery-card-footer">
+            <h3 class="gallery-card-title">Fabiano Caruana</h3>
+            <p>Challenger, theorist, elite competitor</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hikaru Nakamura -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="gallery-card">
+          <div class="gallery-top gold"></div>
+          <div class="gallery-img-wrap">
+            <img src="images/nakamura.jpg" alt="Hikaru Nakamura"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="gallery-placeholder" style="display:none;">
+              <div class="piece-icon">⚡</div>
+              <div class="ph-label">Hikaru</div>
+            </div>
+            <div class="gallery-overlay"><span>View →</span></div>
+          </div>
+          <div class="gallery-card-footer">
+            <h3 class="gallery-card-title">Hikaru Nakamura</h3>
+            <p>Speed king — bullet chess legend</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end .row -->
+  </div><!-- end .container -->
+</section><!-- end .gallery-section -->
+
+<!-- QUOTE -->
+<section class="quote-section">
+  <div class="container">
+    <h2 class="visually-hidden">Inspirational Quote</h2>
+    <blockquote>
+      "Chess is life in miniature. Chess is a struggle, chess battles."
+    </blockquote>
+    <cite>— Garry Kasparov, World Chess Champion</cite>
+  </div>
+</section>
+
+<!-- LEGENDS SECTION -->
+<section class="legends-section">
+  <div class="container">
+    <div class="section-label">Who Inspires Me</div>
+    <h2 class="section-title">The Legends Behind the Gallery</h2>
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="col-lg-9">
+
+        <div class="legend-row">
+          <div class="legend-piece">♚</div>
+          <div class="legend-info">
+            <h3 class="legend-name">Magnus Carlsen</h3>
+            <p>The reigning era's undisputed king. Magnus showed me that chess isn't just about memorising openings — it's about understanding positions deeply and outplaying your opponent in any phase of the game.</p>
+            <span class="legend-badge gm">Grandmaster</span>
+          </div>
+        </div>
+
+        <div class="legend-row">
+          <div class="legend-piece">♔</div>
+          <div class="legend-info">
+            <h3 class="legend-name">Bobby Fischer</h3>
+            <p>Possibly the most gifted chess mind in history. Fischer's obsessive dedication and refusal to settle for anything less than perfection is something I carry into every training session.</p>
+            <span class="legend-badge gm">Grandmaster</span>
+          </div>
+        </div>
+
+        <div class="legend-row">
+          <div class="legend-piece">♞</div>
+          <div class="legend-info">
+            <h3 class="legend-name">Levy Rozman (GothamChess)</h3>
+            <p>The content creator who made chess click for me. Levy's breakdowns of famous games and his ability to explain complex ideas simply inspired me to take my own game seriously.</p>
+            <span class="legend-badge im">International Master</span>
+          </div>
+        </div>
+
+        <div class="legend-row">
+          <div class="legend-piece">⚡</div>
+          <div class="legend-info">
+            <h3 class="legend-name">Hikaru Nakamura</h3>
+            <p>Pure speed and creativity. Hikaru's bullet chess is almost supernatural — watching him find solutions in seconds while I'm still thinking in minutes is both humbling and motivating.</p>
+            <span class="legend-badge gm">Grandmaster</span>
+          </div>
+        </div>
+
+        <div class="legend-row">
+          <div class="legend-piece">♛</div>
+          <div class="legend-info">
+            <h3 class="legend-name">Beth Harmon (The Queen's Gambit)</h3>
+            <p>Fictional — but the story hit real. Her journey from nothing to the world stage, driven by pure love for the game, mirrors what I want my own chess story to look like one day.</p>
+            <span class="legend-badge icon">Cultural Icon</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 <span>Miguel Mosweu</span> ♟ Built with Bootstrap 5 &amp; a lot of determination.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Miguel Mosweu</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cream: #f5f0e8;
+      --dark: #1a1a2e;
+      --red: #e63946;
+      --gold: #f4a522;
+      --mid: #2d2d4e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      background: var(--dark) !important;
+      border-bottom: 3px solid var(--gold);
+    }
+    .navbar-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--gold) !important;
+      letter-spacing: 1px;
+    }
+    .nav-link {
+      color: #ccc !important;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+    .nav-link:hover { color: var(--gold) !important; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      background: var(--dark);
+      padding: 90px 0 70px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '✍';
+      position: absolute;
+      right: -20px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 30vw;
+      opacity: 0.04;
+      pointer-events: none;
+      line-height: 1;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--dark);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      padding: 4px 14px;
+      margin-bottom: 1.2rem;
+      border-radius: 2px;
+    }
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 900;
+      color: white;
+      line-height: 1;
+    }
+    .page-hero h1 span { color: var(--gold); }
+    .page-hero p.lead {
+      color: #aaa;
+      font-size: 1.1rem;
+      font-weight: 300;
+      margin-top: 1.2rem;
+      max-width: 500px;
+    }
+
+    /* ── SECTION LABELS ── */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--red);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      color: var(--dark);
+    }
+    .divider {
+      width: 60px; height: 4px;
+      background: var(--gold);
+      margin-top: 14px; margin-bottom: 40px;
+    }
+
+    /* ── FEATURED POSTS ── */
+    .featured-section { padding: 90px 0 60px; }
+
+    .post-card {
+      background: white;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      transition: transform 0.3s, box-shadow 0.3s;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .post-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.13);
+    }
+    .post-card-top {
+      height: 8px;
+    }
+    .post-card-top.red { background: var(--red); }
+    .post-card-top.gold { background: var(--gold); }
+    .post-card-top.mid { background: var(--mid); }
+    .post-card-top.mix { background: linear-gradient(90deg, var(--gold), var(--red)); }
+
+    .post-card-body {
+      padding: 32px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+    .post-date {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #999;
+    }
+    .post-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 3px 10px;
+      border-radius: 2px;
+    }
+    .post-tag.web { background: #fff0f1; color: var(--red); border: 1px solid var(--red); }
+    .post-tag.css { background: #fffbf0; color: #a07000; border: 1px solid var(--gold); }
+    .post-tag.bootstrap { background: #f0f0ff; color: var(--mid); border: 1px solid var(--mid); }
+    .post-tag.first { background: #f0fff4; color: #1a7a40; border: 1px solid #1a7a40; }
+
+    .post-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      color: var(--dark);
+      line-height: 1.3;
+      margin-bottom: 0.9rem;
+    }
+    .post-card p {
+      font-size: 0.95rem;
+      color: #666;
+      line-height: 1.8;
+      font-weight: 300;
+      flex: 1;
+    }
+    .btn-read {
+      display: inline-block;
+      margin-top: 1.5rem;
+      background: var(--dark);
+      color: white;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 10px 22px;
+      border-radius: 2px;
+      text-decoration: none;
+      border: 2px solid var(--dark);
+      transition: background 0.25s, color 0.25s;
+      align-self: flex-start;
+    }
+    .btn-read:hover {
+      background: transparent;
+      color: var(--dark);
+    }
+
+    /* ── TIMELINE SECTION ── */
+    .timeline-section {
+      background: var(--dark);
+      padding: 90px 0;
+    }
+    .timeline-section .section-label { color: var(--gold); }
+    .timeline-section .section-title { color: white; }
+    .timeline-section .divider { background: var(--red); }
+
+    .timeline {
+      position: relative;
+      padding-left: 40px;
+      margin-top: 20px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 12px; top: 0; bottom: 0;
+      width: 2px;
+      background: rgba(244,165,34,0.3);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 44px;
+    }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-dot {
+      position: absolute;
+      left: -34px; top: 4px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 3px solid var(--dark);
+      box-shadow: 0 0 0 3px var(--gold);
+    }
+    .timeline-date {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .timeline-item h3.timeline-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: white;
+      margin-bottom: 8px;
+    }
+    .timeline-item p {
+      font-size: 0.93rem;
+      color: #aaa;
+      line-height: 1.8;
+      font-weight: 300;
+      max-width: 600px;
+    }
+
+    /* ── QUOTE BLOCK ── */
+    .quote-section {
+      background: var(--gold);
+      padding: 70px 0;
+      text-align: center;
+    }
+    .quote-section blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+      font-weight: 700;
+      color: var(--dark);
+      max-width: 750px;
+      margin: 0 auto;
+      line-height: 1.3;
+    }
+    .quote-section cite {
+      display: block;
+      margin-top: 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #7a5500;
+      font-style: normal;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: #888;
+      text-align: center;
+      padding: 40px 0;
+      border-top: 3px solid var(--gold);
+    }
+    footer span { color: var(--gold); font-weight: 700; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .page-hero .container { animation: fadeUp 0.9s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">♟ Miguel</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="project.html">Projects</a></li>
+        <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link active" href="blog.html">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<header class="page-hero">
+  <div class="container">
+    <div class="hero-tag">My Thoughts & Learnings</div>
+    <h1>The <span>Blog.</span></h1>
+    <p class="lead">Documenting my journey through web development, tech, and life — one post at a time.</p>
+  </div>
+</header>
+
+<!-- FEATURED POSTS -->
+<section class="featured-section">
+  <div class="container">
+    <div class="section-label">Latest Posts</div>
+    <h2 class="section-title">What I've Been Writing</h2>
+    <div class="divider"></div>
+
+    <div class="row g-4">
+
+      <!-- Post 1 -->
+      <div class="col-md-6 col-lg-6">
+        <div class="post-card">
+          <div class="post-card-top red"></div>
+          <div class="post-card-body">
+            <div class="post-meta">
+              <span class="post-date">09 Feb 2026</span>
+              <span class="post-tag web">Web Dev</span>
+            </div>
+            <h3>How I Started Web Development</h3>
+            <p>Today I learned how to build a website using HTML and Bootstrap. It was my first real taste of turning code into something visual — and I was hooked. Seeing a webpage come to life from just a few lines of text is something I didn't expect to enjoy this much.</p>
+            <a href="#" class="btn-read">Read More →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post 2 -->
+      <div class="col-md-6 col-lg-6">
+        <div class="post-card">
+          <div class="post-card-top gold"></div>
+          <div class="post-card-body">
+            <div class="post-meta">
+              <span class="post-date">10 Feb 2026</span>
+              <span class="post-tag bootstrap">Bootstrap</span>
+            </div>
+            <h3>Why Bootstrap is Useful</h3>
+            <p>Bootstrap includes a standard set of styles for typography, buttons, spacing, and layouts. This helps developers maintain consistent design, avoid messy or mismatched styles, and create professional-looking interfaces — without writing hundreds of lines of CSS from scratch.</p>
+            <a href="#" class="btn-read">Read More →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post 3 -->
+      <div class="col-md-6 col-lg-6">
+        <div class="post-card">
+          <div class="post-card-top mix"></div>
+          <div class="post-card-body">
+            <div class="post-meta">
+              <span class="post-date">18 Nov 2025</span>
+              <span class="post-tag first">Milestone</span>
+            </div>
+            <h3>My First Website</h3>
+            <p>On this day I learned how to create my first website. It was required as my final-year assignment, and building it taught me more about coding in one week than I had learned in months. What started as a task turned into a genuine passion for building things on the web.</p>
+            <a href="#" class="btn-read">Read More →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post 4 -->
+      <div class="col-md-6 col-lg-6">
+        <div class="post-card">
+          <div class="post-card-top mid"></div>
+          <div class="post-card-body">
+            <div class="post-meta">
+              <span class="post-date">19 Nov 2025</span>
+              <span class="post-tag css">CSS</span>
+            </div>
+            <h3>Learning CSS Styling</h3>
+            <p>After getting the hang of HTML structure, I dove into CSS to make things actually look good. Learning how to style a page — colours, fonts, spacing, layout — completely changed how I saw the web. It made my site feel alive, not just functional.</p>
+            <a href="#" class="btn-read">Read More →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE SECTION -->
+<section class="quote-section">
+  <div class="container">
+    <h2 class="visually-hidden">Study Motto</h2>
+    <blockquote>
+      "Every expert was once a beginner who refused to quit."
+    </blockquote>
+    <cite>— Miguel's Study Motto</cite>
+  </div>
+</section>
+
+<!-- TIMELINE SECTION -->
+<section class="timeline-section">
+  <div class="container">
+    <div class="section-label">How It Started</div>
+    <h2 class="section-title">My Learning Timeline</h2>
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="timeline">
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">November 2025</div>
+            <h3 class="timeline-heading">Built My First Website</h3>
+            <p>Started from scratch with raw HTML as part of a final assignment. The experience cracked open a new world of creative coding I hadn't explored before.</p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">November 2025</div>
+            <h3 class="timeline-heading">Discovered CSS</h3>
+            <p>Learning CSS transformed how I thought about design. Suddenly, every page could be customised — colours, fonts, spacing — it all clicked into place.</p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">February 2026</div>
+            <h3 class="timeline-heading">Adopted Bootstrap 5</h3>
+            <p>Discovered the power of component-based design with Bootstrap. Responsive layouts and consistent styling became effortless — no more fighting the browser.</p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">Now — 2026</div>
+            <h3 class="timeline-heading">Building &amp; Growing</h3>
+            <p>Currently studying BIDA at BAC, expanding skills across Python, Data Warehousing, and Systems Development while continuing to level up in web design.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 <span>Miguel Mosweu</span> ♟ Built with Bootstrap 5 &amp; a lot of determination.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

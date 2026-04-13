@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Miguel Mosweu</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cream: #f5f0e8;
+      --dark: #1a1a2e;
+      --red: #e63946;
+      --gold: #f4a522;
+      --mid: #2d2d4e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      background: var(--dark) !important;
+      border-bottom: 3px solid var(--gold);
+    }
+    .navbar-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--gold) !important;
+      letter-spacing: 1px;
+    }
+    .nav-link {
+      color: #ccc !important;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+    .nav-link:hover { color: var(--gold) !important; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      background: var(--dark);
+      padding: 90px 0 70px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '♜';
+      position: absolute;
+      right: -20px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 30vw;
+      opacity: 0.04;
+      pointer-events: none;
+      line-height: 1;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--dark);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      padding: 4px 14px;
+      margin-bottom: 1.2rem;
+      border-radius: 2px;
+    }
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 900;
+      color: white;
+      line-height: 1;
+    }
+    .page-hero h1 span { color: var(--gold); }
+    .page-hero p.lead {
+      color: #aaa;
+      font-size: 1.1rem;
+      font-weight: 300;
+      margin-top: 1.2rem;
+      max-width: 520px;
+    }
+
+    /* ── SHARED ── */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--red);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      color: var(--dark);
+    }
+    .divider {
+      width: 60px; height: 4px;
+      background: var(--gold);
+      margin-top: 14px; margin-bottom: 40px;
+    }
+
+    /* ── CHESS STRATEGY BANNER ── */
+    .chess-banner {
+      background: var(--mid);
+      padding: 36px 0;
+      border-top: 3px solid var(--gold);
+      border-bottom: 3px solid var(--gold);
+    }
+    .chess-banner .row { align-items: center; }
+    .chess-principle {
+      text-align: center;
+      padding: 10px 20px;
+      border-right: 1px solid rgba(244,165,34,0.25);
+    }
+    .chess-principle:last-child { border-right: none; }
+    .chess-principle .piece { font-size: 2rem; display: block; margin-bottom: 6px; }
+    .chess-principle .label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .chess-principle p {
+      font-size: 0.82rem;
+      color: #aaa;
+      font-weight: 300;
+      margin: 0;
+    }
+
+    /* ── PROJECT CARDS ── */
+    .projects-section { padding: 90px 0 60px; }
+
+    .project-card {
+      background: white;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      transition: transform 0.3s, box-shadow 0.3s;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.13);
+    }
+    .project-card-top { height: 8px; }
+    .project-card-top.red  { background: var(--red); }
+    .project-card-top.gold { background: var(--gold); }
+    .project-card-top.mid  { background: var(--mid); }
+
+    .project-card-body {
+      padding: 32px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .project-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: #f0ebe0;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .project-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+    .project-card p {
+      font-size: 0.93rem;
+      color: #666;
+      line-height: 1.8;
+      font-weight: 300;
+      flex: 1;
+    }
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 1.4rem;
+    }
+    .tech-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 4px 12px;
+      border-radius: 2px;
+      background: #f0ebe0;
+      color: var(--mid);
+      border: 1px solid #ddd;
+    }
+    .chess-parallel {
+      margin-top: 1.2rem;
+      padding: 12px 16px;
+      background: #fffbf0;
+      border-left: 3px solid var(--gold);
+      font-size: 0.82rem;
+      color: #7a5500;
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .chess-parallel strong {
+      font-style: normal;
+      font-weight: 700;
+      color: #5a3e00;
+    }
+    .btn-project {
+      display: inline-block;
+      margin-top: 1.5rem;
+      background: var(--dark);
+      color: white;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 10px 22px;
+      border-radius: 2px;
+      text-decoration: none;
+      border: 2px solid var(--dark);
+      transition: background 0.25s, color 0.25s;
+      align-self: flex-start;
+    }
+    .btn-project:hover {
+      background: transparent;
+      color: var(--dark);
+    }
+
+    /* ── SKILLS TABLE ── */
+    .skills-section {
+      background: var(--dark);
+      padding: 90px 0;
+    }
+    .skills-section .section-label { color: var(--gold); }
+    .skills-section .section-title { color: white; }
+    .skills-section .divider { background: var(--red); }
+
+    .skills-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    .skills-table thead th {
+      background: var(--gold);
+      color: var(--dark);
+      padding: 16px 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.78rem;
+    }
+    .skills-table tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      transition: background 0.2s;
+    }
+    .skills-table tbody tr:hover { background: rgba(244,165,34,0.06); }
+    .skills-table td {
+      padding: 18px 20px;
+      color: #ccc;
+      font-size: 0.93rem;
+    }
+    .skills-table td:first-child {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .progress-bar-custom {
+      height: 7px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      min-width: 120px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--red));
+      border-radius: 4px;
+    }
+
+    /* ── QUOTE SECTION ── */
+    .quote-section {
+      background: var(--gold);
+      padding: 70px 0;
+      text-align: center;
+    }
+    .quote-section blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+      font-weight: 700;
+      color: var(--dark);
+      max-width: 750px;
+      margin: 0 auto;
+      line-height: 1.3;
+    }
+    .quote-section cite {
+      display: block;
+      margin-top: 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #7a5500;
+      font-style: normal;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: #888;
+      text-align: center;
+      padding: 40px 0;
+      border-top: 3px solid var(--gold);
+    }
+    footer span { color: var(--gold); font-weight: 700; }
+
+    /* ── ANIMATION ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .page-hero .container { animation: fadeUp 0.9s ease both; }
+
+    /* ── CHESS BOARD ACCENT ── */
+    .board-accent {
+      display: inline-grid;
+      grid-template-columns: repeat(4, 14px);
+      grid-template-rows: repeat(4, 14px);
+      gap: 2px;
+      margin-bottom: 1.5rem;
+      opacity: 0.6;
+    }
+    .board-accent .sq {
+      width: 14px; height: 14px; border-radius: 2px;
+    }
+    .board-accent .sq.b { background: var(--dark); }
+    .board-accent .sq.w { background: var(--gold); }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">♟ Miguel</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link active" href="project.html">Projects</a></li>
+        <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<header class="page-hero">
+  <div class="container">
+    <div class="hero-tag">Built with Purpose</div>
+    <h1>My <span>Projects.</span></h1>
+    <p class="lead">Like a chess player plans their opening, every project starts with a clear strategy — and ends with a result that matters.</p>
+  </div>
+</header>
+
+<!-- CHESS PRINCIPLES BANNER -->
+<div class="chess-banner">
+  <div class="container">
+    <div class="row g-0">
+      <div class="col-6 col-md-3">
+        <div class="chess-principle">
+          <span class="piece">♟</span>
+          <span class="label">Opening</span>
+          <p>Plan before you build</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="chess-principle">
+          <span class="piece">♞</span>
+          <span class="label">Middlegame</span>
+          <p>Execute with precision</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="chess-principle">
+          <span class="piece">♜</span>
+          <span class="label">Endgame</span>
+          <p>Deliver a clean result</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="chess-principle">
+          <span class="piece">♛</span>
+          <span class="label">The King Move</span>
+          <p>Always keep improving</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<section class="projects-section">
+  <div class="container">
+    <div class="section-label">What I've Built</div>
+    <h2 class="section-title">Projects on the Board</h2>
+    <div class="divider"></div>
+
+    <div class="row g-4">
+
+      <!-- Project 1 -->
+      <div class="col-md-6 col-lg-4">
+        <div class="project-card">
+          <div class="project-card-top red"></div>
+          <div class="project-card-body">
+            <div class="project-number">01</div>
+            <h3>Personal Website</h3>
+            <p>A multi-page personal website built from scratch using HTML and CSS. This was my first real move on the board — learning structure, styling, and how to make something I was proud to show the world.</p>
+            <div class="tech-stack">
+              <span class="tech-pill">HTML5</span>
+              <span class="tech-pill">CSS3</span>
+            </div>
+            <div class="chess-parallel">
+              <strong>♟ Chess Parallel:</strong> Like learning your first opening — you don't know all the theory yet, but every move teaches you something new.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="col-md-6 col-lg-4">
+        <div class="project-card">
+          <div class="project-card-top gold"></div>
+          <div class="project-card-body">
+            <div class="project-number">02</div>
+            <h3>Portfolio Website</h3>
+            <p>A modern, responsive portfolio website designed using Bootstrap 5. Built to showcase my skills and projects in a clean, professional layout — because first impressions matter both on the board and online.</p>
+            <div class="tech-stack">
+              <span class="tech-pill">HTML5</span>
+              <span class="tech-pill">CSS3</span>
+              <span class="tech-pill">Bootstrap 5</span>
+            </div>
+            <div class="chess-parallel">
+              <strong>♞ Chess Parallel:</strong> Like deploying your knights early — getting your pieces (skills) out into active positions where they can do real work.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="col-md-6 col-lg-4">
+        <div class="project-card">
+          <div class="project-card-top mid"></div>
+          <div class="project-card-body">
+            <div class="project-number">03</div>
+            <h3>Student Registration System</h3>
+            <p>A functional backend system designed to register and manage student records in a database. This project pushed me into logic, data management, and understanding how systems actually talk to each other.</p>
+            <div class="tech-stack">
+              <span class="tech-pill">Java</span>
+              <span class="tech-pill">MySQL</span>
+            </div>
+            <div class="chess-parallel">
+              <strong>♜ Chess Parallel:</strong> Like controlling the centre — a solid database at the heart of a system gives every other piece room to operate and attack.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE SECTION -->
+<section class="quote-section">
+  <div class="container">
+    <h2 class="visually-hidden">Project Philosophy</h2>
+    <blockquote>
+      "In chess and in code, the player who thinks three moves ahead always wins."
+    </blockquote>
+    <cite>— Miguel's Project Philosophy</cite>
+  </div>
+</section>
+
+<!-- SKILLS TABLE -->
+<section class="skills-section">
+  <div class="container">
+    <div class="section-label">My Arsenal</div>
+    <h2 class="section-title">Technologies & Tools</h2>
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="col-lg-10">
+        <table class="skills-table">
+          <thead>
+            <tr>
+              <th>Technology</th>
+              <th>Category</th>
+              <th>Used In</th>
+              <th>Proficiency</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>HTML5</td>
+              <td>Frontend</td>
+              <td>Personal Website, Portfolio</td>
+              <td>
+                <div class="progress-bar-custom"><div class="progress-fill" style="width:80%"></div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>CSS3</td>
+              <td>Styling</td>
+              <td>Personal Website, Portfolio</td>
+              <td>
+                <div class="progress-bar-custom"><div class="progress-fill" style="width:72%"></div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>Bootstrap 5</td>
+              <td>UI Framework</td>
+              <td>Portfolio Website</td>
+              <td>
+                <div class="progress-bar-custom"><div class="progress-fill" style="width:68%"></div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>Java</td>
+              <td>Backend</td>
+              <td>Student Registration System</td>
+              <td>
+                <div class="progress-bar-custom"><div class="progress-fill" style="width:50%"></div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>MySQL</td>
+              <td>Database</td>
+              <td>Student Registration System</td>
+              <td>
+                <div class="progress-bar-custom"><div class="progress-fill" style="width:50%"></div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>Python</td>
+              <td>Programming</td>
+              <td>BAC Coursework (In Progress)</td>
+              <td>
+                <div class="progress-bar-custom"><div class="progress-fill" style="width:40%"></div></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 <span>Miguel Mosweu</span> ♟ Built with Bootstrap 5 &amp; a lot of determination.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
